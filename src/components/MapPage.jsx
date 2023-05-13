@@ -1,38 +1,32 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import {Card} from 'react-bootstrap'
+import {Map, MapMarker} from 'react-kakao-maps-sdk'
 
-const Book = ({book}) => {
+const MapPage = ({local}) => {
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     return (
         <>
-            <Button variant="primary btn-sm" onClick={handleShow}>
-                보기
-            </Button>
-
+            <Button variant="primary" className='btn-sm'
+                 onClick={handleShow}>위치보기</Button>
             <Modal
                 show={show}
                 onHide={handleClose}
                 backdrop="static"
                 keyboard={false}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{book.title}</Modal.Title>
+                    <Modal.Title>{local.place_name}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Card>
-                        <Card.Body className="book">
-                            <img src={book.thumbnail}/>
-                            <div>가격: {book.price}</div>
-                            <div>저자: {book.authors}</div>
-                            <hr/>
-                            <div>{book.contents}</div>
-                        </Card.Body>
-                    </Card>
+                    <Map center={{ lat: local.y, lng: local.x }} 
+                        style={{ width: "100%", height: "360px" }}>
+                        <MapMarker position={{ lat: local.y, lng: local.x }}>
+                            <div style={{ color: "#000" }}>{local.address_name}</div>
+                        </MapMarker>
+                    </Map>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
@@ -44,4 +38,4 @@ const Book = ({book}) => {
     )
 }
 
-export default Book
+export default MapPage

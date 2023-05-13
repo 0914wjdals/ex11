@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { Button, Col, Row, Form, Card, InputGroup } from 'react-bootstrap'
+import React, { useEffect, useRef, useState } from 'react'
+import { Button, Col, Row, Form, Card } from 'react-bootstrap'
 import Book from './Book';
 
 const BookPage = () => {
@@ -18,7 +18,7 @@ const BookPage = () => {
         }
         setLoading(true);
         const result= await axios.get(url, config);
-        console.log(result);
+        console.log(result.data);
         setList(result.data.documents);
         setIs_end(result.data.meta.is_end);
         setLoading(false);
@@ -39,24 +39,21 @@ const BookPage = () => {
         <Row>
             <h1 className='text-center my-5'>도서검색</h1>
             <Row>
-                <Col lg={4} xs={6}>
+                <Col md={4}>
                     <Form onSubmit={onSubmit}>
-                        <InputGroup>
-                            <Form.Control  
-                                onChange={(e)=>setQuery(e.target.value)}
-                                placeholder="검색어" value={query}/>
-                            <InputGroup.Text>검색</InputGroup.Text>
-                        </InputGroup>
+                        <Form.Control  
+                            onChange={(e)=>setQuery(e.target.value)}
+                            placeholder="검색어" value={query}/>
                     </Form>
                 </Col>
             </Row>
             <Row>
                 {list.map(book=>
-                    <Col key={book.isbn} lg={3} md={3} xs={6} className="my-2">
+                    <Col key={book.isbn} md={3} xs={6} className="my-2">
                         <Card>
                             <Card.Body>
                                 <img src={book.thumbnail}/>
-                                <div className='ellipsis mt-2' style={{fontSize:'0.8rem'}}>{book.title}</div>
+                                <div className='ellipsis'>{book.title}</div>
                                 <Book book={book}/>
                             </Card.Body>
                         </Card>
